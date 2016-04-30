@@ -51,6 +51,19 @@ namespace CalendarQuickstart
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Schedlr());
+        }
+
+        /*
+        Gets the next free time based off of the priority and next free time.
+        */
+        public EventDateTime getStartTime()
+        {
+            return null;
+        }
+
+        public void addNewEvent(String summary, String location, EventDateTime startDate, EventDateTime endDate)
+        {
+            getStartTime();
 
             UserCredential credential;
 
@@ -77,39 +90,6 @@ namespace CalendarQuickstart
                 ApplicationName = ApplicationName,
             });
 
-            // Define parameters of request.
-            EventsResource.ListRequest request = service.Events.List("primary");
-            request.TimeMin = DateTime.Now;
-            request.ShowDeleted = false;
-            request.SingleEvents = true;
-            request.MaxResults = 10;
-            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-
-            // List events.
-            Events events = request.Execute();
-            Console.WriteLine("Upcoming events:");
-            if (events.Items != null && events.Items.Count > 0)
-            {
-                foreach (var eventItem in events.Items)
-                {
-                    string when = eventItem.Start.DateTime.ToString();
-                    if (String.IsNullOrEmpty(when))
-                    {
-                        when = eventItem.Start.Date;
-                    }
-                    Console.WriteLine("{0} ({1})", eventItem.Summary, when);
-                }
-            }
-            else
-            {
-                Console.WriteLine("No upcoming events found.");
-            }
-            Console.Read();
-
-        }
-
-        public void addEvent(String summary, String location, EventDateTime startDate, EventDateTime endDate)
-        {
             Event myEvent = new Event
             {
                 Summary = summary,
@@ -133,7 +113,7 @@ namespace CalendarQuickstart
                 }*/
             };
 
-            //myEvent.
+            myEvent = service.Events.Insert(myEvent, "primary").Execute();
             //Event recurringEvent = Events.Insert(myEvent, "primary").Execute();
         }
     }
