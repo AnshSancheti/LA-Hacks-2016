@@ -21,23 +21,26 @@ namespace WindowsFormsApplication1
     }
 }*/
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using Google.Apis.Auth.OAuth2;
 using Google.Apis.Calendar.v3;
 using Google.Apis.Calendar.v3.Data;
 using Google.Apis.Services;
 using Google.Apis.Util.Store;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
+using WindowsFormsApplication1;
 
 namespace CalendarQuickstart
 {
     class Program
     {
+        
         // If modifying these scopes, delete your previously saved credentials
         // at ~/.credentials/calendar-dotnet-quickstart.json
         static string[] Scopes = { CalendarService.Scope.CalendarReadonly };
@@ -45,6 +48,10 @@ namespace CalendarQuickstart
 
         static void Main(string[] args)
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+            Application.Run(new Schedlr());
+
             UserCredential credential;
 
             using (var stream =
@@ -99,6 +106,35 @@ namespace CalendarQuickstart
             }
             Console.Read();
 
+        }
+
+        public void addEvent(String summary, String location, EventDateTime startDate, EventDateTime endDate)
+        {
+            Event myEvent = new Event
+            {
+                Summary = summary,
+                Location = location,
+                Start = startDate, /* new EventDateTime()
+                {
+                    DateTime = new DateTime(2014, 6, 2, 10, 0, 0),
+                    TimeZone = "America/Los_Angeles"
+                }*/
+                End = endDate /* new EventDateTime()
+                {
+                    DateTime = new DateTime(2014, 6, 2, 10, 30, 0),
+                    TimeZone = "America/Los_Angeles"
+                },*/
+                /*Recurrence = recurrence, new String[] {
+                    "RRULE:FREQ=WEEKLY;BYDAY=MO"
+                },
+                Attendees = new List<EventAttendee>()
+                {
+                    new EventAttendee() { Email = "johndoe@gmail.com" }
+                }*/
+            };
+
+            //myEvent.
+            //Event recurringEvent = Events.Insert(myEvent, "primary").Execute();
         }
     }
 }
