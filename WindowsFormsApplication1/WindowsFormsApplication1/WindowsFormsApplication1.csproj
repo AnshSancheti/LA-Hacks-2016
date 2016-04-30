@@ -87,6 +87,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomEvent.cs" />
+    <Compile Include="CustomEventComparer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>
     </Compile>

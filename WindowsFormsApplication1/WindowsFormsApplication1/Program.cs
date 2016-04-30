@@ -170,6 +170,52 @@ namespace CalendarQuickstart
             //myEvent.
             //Event recurringEvent = Events.Insert(myEvent, "primary").Execute();
         }
+
+        public List<CustomEvent> sortEvents(List<CustomEvent> toBeAdded)
+        {
+            toBeAdded.Sort(delegate(CustomEvent x, CustomEvent y)
+            {
+                if (x.getDateTime() == null && y.getDateTime() == null) return 0;
+                else if (x.getDateTime() == null) return -1;
+                else if (y.getDateTime() == null) return 1;
+                else return x.getDateTime().CompareTo(y.getDateTime());
+            });
+
+            /*foreach(CustomEvent x in toBeAdded)
+            {
+                Console.WriteLine(x.getEventName());
+            }*/
+
+            int count = 1;
+            int locTracker = 0;
+            CustomEventComparer cec = new CustomEventComparer();
+
+            //foreach(CustomEvent x in toBeAdded)
+            for(int i = 0; i < toBeAdded.Count; i+=count)
+            {
+                count = 1;
+                //foreach(CustomEvent y in toBeAdded)
+                for (int j = i+1; j <toBeAdded.Count; j++)
+                {
+                    if(toBeAdded[i].getDateTime().Equals(toBeAdded[j].getDateTime()))
+                    {
+                        count++;
+                    }
+                }
+
+                if(count > 1)
+                {
+                    toBeAdded.Sort(i, count, cec);
+                }
+            }
+
+            foreach(CustomEvent x in toBeAdded)
+            {
+                Console.WriteLine(x.getEventName());
+            }
+            return toBeAdded;
+        }
+
     }
 
 
