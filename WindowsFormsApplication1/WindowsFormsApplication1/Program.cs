@@ -51,9 +51,13 @@ namespace CalendarQuickstart
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Schedlr());
-
-            UserCredential credential;
             
+        }
+
+        public void addEvent(String summary, String location, EventDateTime startTime, EventDateTime endTime)
+        {
+            UserCredential credential;
+
             using (var stream =
                 new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
             {
@@ -77,40 +81,23 @@ namespace CalendarQuickstart
                 ApplicationName = ApplicationName,
             });
 
-            // Define parameters of request.
-            EventsResource.ListRequest request = service.Events.List("primary");
-            request.TimeMin = DateTime.Now;
-            request.ShowDeleted = false;
-            request.SingleEvents = true;
-            request.MaxResults = 10;
-            request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
-
-            // List events.
-            Events events = request.Execute();
-            Console.WriteLine("Upcoming events:");
-            if (events.Items != null && events.Items.Count > 0)
+            Event myEvent = new Event
             {
-                foreach (var eventItem in events.Items)
+                Summary = summary,
+                Location = location,
+                Start = startTime, /*new EventDateTime()
                 {
-                    string when = eventItem.Start.DateTime.ToString();
-                    string end = eventItem.End.DateTime.ToString();
-                    if (String.IsNullOrEmpty(when))
-                    {
-                        when = eventItem.Start.Date;
-                        end = eventItem.End.Date;
-                        
-                    }
-                    
-                    Console.WriteLine("{0} ({1})", eventItem.Summary, when + " " + end);
-                    
-                }
-            }
-            else
-            {
-                Console.WriteLine("No upcoming events found.");
-            }
-            Console.Read();
-            
+                    DateTime = new DateTime(2014, 6, 2, 10, 0, 0),
+                    TimeZone = "America/Los_Angeles"
+                }*/
+                End = endTime /*new EventDateTime()
+                {
+                    DateTime = new DateTime(2014, 6, 2, 10, 30, 0),
+                    TimeZone = "America/Los_Angeles"
+                }*/
+            };
+
+            Event recurringEvent = service.Events.Insert(myEvent, "primary").Execute();
         }
 
         public void getEvent(List<string> eventlist, List<string> location, List<string> starttime, List<string> endtime)
@@ -184,4 +171,6 @@ namespace CalendarQuickstart
             //Event recurringEvent = Events.Insert(myEvent, "primary").Execute();
         }
     }
+
+
 }
