@@ -20,13 +20,23 @@ namespace WindowsFormsApplication1
 
         private void Form1_Load(object sender, EventArgs e)
         {
-
+            
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             Program prg = new Program();
+            List<string> events = new List<string>();
+            List<string> loc = new List<string>();
             //prg.addEvent();
+            List<string> start = new List<string>();
+            List<string> end = new List<string>();
+            prg.getEvent(events, loc, start, end);
+            for (int i = 0; i < events.Count; i++)
+            {
+                MessageBox.Show(events[i]);
+            }
+
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
