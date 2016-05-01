@@ -227,5 +227,10 @@ namespace WindowsFormsApplication1
                 return timebuilder.ToString();
             }
         }
+
+        private void textBox3_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
