@@ -102,6 +102,7 @@ namespace WindowsFormsApplication1
             List<double> duration = new List<double>();
 
 
+            //////////////////////////////////////
             //Gets current google calendar events
             List<CustomEvent> currentEvents = prg.getEvent(events, loc, start, end,dayofweek,duration);
 
