@@ -66,15 +66,25 @@ namespace WindowsFormsApplication1
                 MessageBox.Show("Please enter an event name");
                 return;
             }
-            CustomEvent custom = new CustomEvent(tbEventName.Text, tbEventLocation.Text, priority, length);
+            CustomEvent custom = new CustomEvent(tbEventName.Text, tbEventLocation.Text, dtDueDate.Value, priority, length);
             customEvents.Add(custom);
             tbEventLength.Clear();
             tbEventName.Clear();
             tbEventLocation.Clear();
             tbPriority.Clear();
             MessageBox.Show("Event added successfully!");
-               
 
+            Program prg = new Program();
+
+            List<CustomEvent> x = new List<CustomEvent>();
+            x.Add(new CustomEvent("event 1", "here", new DateTime(2000, 12, 23), 1, 60));
+            x.Add(new CustomEvent("event 2", "here", new DateTime(2000, 12, 23), 6, 60));
+            x.Add(new CustomEvent("event 3", "here", new DateTime(2000, 12, 23), 2, 60));
+            x.Add(new CustomEvent("event 4", "here", new DateTime(2000, 12, 24), 9, 60));
+            x.Add(new CustomEvent("event 5", "here", new DateTime(2000, 12, 24), 3, 60));
+            x.Add(new CustomEvent("event 6", "here", new DateTime(2000, 12, 24), 5, 60));
+
+            prg.sortEvents(x);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -108,6 +118,16 @@ namespace WindowsFormsApplication1
             MessageBox.Show("Connecting to Internet");
             form2.getEvents(customEvents);
             form2.Show();
+        }
+
+        private void label1_Click_2(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
