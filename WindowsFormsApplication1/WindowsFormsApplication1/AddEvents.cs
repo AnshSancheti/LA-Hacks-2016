@@ -115,15 +115,16 @@ namespace WindowsFormsApplication1
         private void btnDone_Click(object sender, EventArgs e)
         {
             List<CustomEvent> currentCalender = new List<CustomEvent>();
-
             Form2 form2 = new Form2();
+
             Program prg = new Program();
 
             MessageBox.Show("Connecting to Internet");
-
             
             //Sorts events
             customEvents = prg.sortEvents(customEvents);
+            form2.AddUserInputEvents(customEvents);
+
 
             //prg.addSortedEvents(customEvents,)
             form2.Show();
