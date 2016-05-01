@@ -14,7 +14,7 @@ namespace WindowsFormsApplication1
             else if (x.getPriority() == 0) return -1;
             else if (y.getPriority() == 0) return 1;
             else if (x.getPriority() < y.getPriority()) { return -1; }
-            else return 1; //x.getPriority().CompareTo(y.getPriority());
+            else return 1;
         }
     }
 }

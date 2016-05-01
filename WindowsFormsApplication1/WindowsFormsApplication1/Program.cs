@@ -187,7 +187,6 @@ namespace CalendarQuickstart
             }*/
 
             int count = 1;
-            int locTracker = 0;
             CustomEventComparer cec = new CustomEventComparer();
 
             //foreach(CustomEvent x in toBeAdded)
@@ -216,7 +215,11 @@ namespace CalendarQuickstart
             return toBeAdded;
         }
 
-    }
+        public void ac()
+        {
 
+        }
+
+    }
 
 }

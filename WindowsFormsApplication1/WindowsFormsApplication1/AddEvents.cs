@@ -114,7 +114,7 @@ namespace WindowsFormsApplication1
 
         private void btnDone_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2();
+            DisplayCalender form2 = new DisplayCalender();
             form2.Show();
         }
 
