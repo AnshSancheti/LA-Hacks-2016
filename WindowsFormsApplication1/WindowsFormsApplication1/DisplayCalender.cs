@@ -15,6 +15,7 @@ namespace WindowsFormsApplication1
     {
         
         List<CustomEvent> customEvents = new List<CustomEvent>();
+        List<CustomEvent> userInputEvent = new List<CustomEvent>();
         Dictionary<string, ListViewItem> timeToListView = new Dictionary<string, ListViewItem>();
         public Form2()
         {
@@ -82,7 +83,10 @@ namespace WindowsFormsApplication1
             timeToListView.Add("7:30:00 AM", listView1.Items[47]);
 
         }
-
+        internal void AddUserInputEvents(List<CustomEvent> e)
+        {
+            userInputEvent = e;
+        }
         private void Form2_Load(object sender, EventArgs e)
         {
             addToDictionary();
@@ -151,7 +155,7 @@ namespace WindowsFormsApplication1
 
             
         }
-
+    
         private string dateIncrementer(string time)
         {
             StringBuilder timebuilder = new StringBuilder(time);
