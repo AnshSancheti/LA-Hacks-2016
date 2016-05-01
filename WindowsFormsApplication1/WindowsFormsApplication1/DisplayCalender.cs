@@ -16,6 +16,7 @@ namespace WindowsFormsApplication1
         
         List<CustomEvent> customEvents = new List<CustomEvent>();
         List<CustomEvent> userInputEvent = new List<CustomEvent>();
+
         Dictionary<string, ListViewItem> timeToListView = new Dictionary<string, ListViewItem>();
         public Form2()
         {
@@ -87,6 +88,7 @@ namespace WindowsFormsApplication1
         {
             userInputEvent = e;
         }
+
         private void Form2_Load(object sender, EventArgs e)
         {
             addToDictionary();
