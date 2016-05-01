@@ -139,5 +139,10 @@ namespace WindowsFormsApplication1
         {
 
         }
+
+        private void lblEventPriority_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }
