@@ -134,6 +134,7 @@ namespace WindowsFormsApplication1
                 {
                     time = dateIncrementer(time);
                     timeToListView[time].SubItems[dayOfWeekInt].Text = events[i];
+
                 }
 
 
