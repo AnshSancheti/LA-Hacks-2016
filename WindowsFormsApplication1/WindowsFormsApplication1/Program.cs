@@ -100,9 +100,10 @@ namespace CalendarQuickstart
             Event recurringEvent = service.Events.Insert(myEvent, "primary").Execute();
         }
 
-        public void getEvent(List<string> eventlist, List<string> location, List<string> starttime, List<string> endtime, List<string> dayOfWeek, List<double> totalDurationInHalfHours)
+        public List<CustomEvent> getEvent(List<string> eventlist, List<string> location, List<string> starttime, List<string> endtime, List<string> dayOfWeek, List<double> totalDurationInHalfHours)
         {
             UserCredential credential;
+            List<CustomEvent> customEventList = new List<CustomEvent>();
 
             using (var stream =
                 new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
@@ -170,15 +171,19 @@ namespace CalendarQuickstart
                     double time = (eventItem.End.DateTime - eventItem.Start.DateTime).Value.TotalHours*2;
                     totalDurationInHalfHours.Add(time);
 
+                    customEventList.Add(new CustomEvent(eventItem.Summary, loc, eventItem.Start.DateTime, eventItem.End.DateTime));
+
                 }
             }
             else
             {
             }
-            
+
 
             //myEvent.
             //Event recurringEvent = Events.Insert(myEvent, "primary").Execute();
+
+            return customEventList;
         }
 
         public List<CustomEvent> sortEvents(List<CustomEvent> toBeAdded)
@@ -225,7 +230,7 @@ namespace CalendarQuickstart
             return toBeAdded;
         }
 
-        public void ac()
+        public void addSortedEvents(CustomEvent toBeAdded)
         {
 
         }

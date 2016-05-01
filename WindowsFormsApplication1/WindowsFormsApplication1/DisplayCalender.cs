@@ -96,11 +96,19 @@ namespace WindowsFormsApplication1
             List<CustomEvent> c = new List<CustomEvent>();
             List<string> dayofweek = new List<string>();
             List<double> duration = new List<double>();
-            prg.getEvent(events, loc, start, end,dayofweek,duration);
+
+
+            //Gets current google calendar events
+            List<CustomEvent> currentEvents = prg.getEvent(events, loc, start, end,dayofweek,duration);
+
+            foreach( CustomEvent x in currentEvents) 
+            {
+                Console.WriteLine(x.getEventName());
+            }
             for (int i = 0; i < events.Count; i++)
             {
                 
-                CustomEvent ev = new CustomEvent(events[i], loc[i], 0, 0);
+                CustomEvent ev = new CustomEvent(events[i], loc[i], null, null);
                 string day = dayofweek[i];
                 int dayOfWeekInt = 0;
                 switch (day)

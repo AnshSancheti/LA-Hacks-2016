@@ -76,15 +76,15 @@ namespace WindowsFormsApplication1
 
             Program prg = new Program();
 
-            List<CustomEvent> x = new List<CustomEvent>();
+            /*List<CustomEvent> x = new List<CustomEvent>();
             x.Add(new CustomEvent("event 1", "here", new DateTime(2000, 12, 23), 1, 60));
             x.Add(new CustomEvent("event 2", "here", new DateTime(2000, 12, 23), 6, 60));
             x.Add(new CustomEvent("event 3", "here", new DateTime(2000, 12, 23), 2, 60));
             x.Add(new CustomEvent("event 4", "here", new DateTime(2000, 12, 24), 9, 60));
             x.Add(new CustomEvent("event 5", "here", new DateTime(2000, 12, 24), 3, 60));
-            x.Add(new CustomEvent("event 6", "here", new DateTime(2000, 12, 24), 5, 60));
+            x.Add(new CustomEvent("event 6", "here", new DateTime(2000, 12, 24), 5, 60));*/
 
-            prg.sortEvents(x);
+            //prg.sortEvents(x);
         }
 
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -114,9 +114,18 @@ namespace WindowsFormsApplication1
 
         private void btnDone_Click(object sender, EventArgs e)
         {
+            List<CustomEvent> currentCalender = new List<CustomEvent>();
+
             Form2 form2 = new Form2();
+            Program prg = new Program();
+
             MessageBox.Show("Connecting to Internet");
-            form2.getEvents(customEvents);
+
+            
+            //Sorts events
+            customEvents = prg.sortEvents(customEvents);
+
+            //prg.addSortedEvents(customEvents,)
             form2.Show();
         }
 
