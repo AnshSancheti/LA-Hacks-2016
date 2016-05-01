@@ -100,7 +100,7 @@ namespace CalendarQuickstart
             Event recurringEvent = service.Events.Insert(myEvent, "primary").Execute();
         }
 
-        public void getEvent(List<string> eventlist, List<string> location, List<string> starttime, List<string> endtime)
+        public void getEvent(List<string> eventlist, List<string> location, List<string> starttime, List<string> endtime, List<string> dayOfWeek)
         {
             UserCredential credential;
 
@@ -143,6 +143,8 @@ namespace CalendarQuickstart
                     string when = eventItem.Start.DateTime.ToString();
                     string end = eventItem.End.DateTime.ToString();
                     string loc = " ";
+                    
+
                     if (eventItem.Location != null)
                     {
                         loc = eventItem.Location.ToString();
@@ -151,11 +153,16 @@ namespace CalendarQuickstart
                     
                     if (String.IsNullOrEmpty(when))
                     {
+                        
                         when = eventItem.Start.Date;
                         end = eventItem.End.Date;
-                        
+
+
                     }
+                    DateTime datevaluewhen = new DateTime(Int32.Parse(when.Split(' ')[0].Split('/')[2]), Int32.Parse(when.Split(' ')[0].Split('/')[0]), Int32.Parse(when.Split(' ')[0].Split('/')[1]));
+                    DateTime datevalueend = new DateTime(Int32.Parse(end.Split(' ')[0].Split('/')[2]), Int32.Parse(end.Split(' ')[0].Split('/')[0]), Int32.Parse(end.Split(' ')[0].Split('/')[1]));
                     eventlist.Add(eventItem.Summary);
+                    dayOfWeek.Add(datevaluewhen.DayOfWeek.ToString());
                     starttime.Add(when);
                     endtime.Add(end);
                     location.Add(loc);

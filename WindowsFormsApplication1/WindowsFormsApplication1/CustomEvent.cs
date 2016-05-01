@@ -13,6 +13,8 @@ namespace WindowsFormsApplication1
         private string location;
         private int priority;
         private int length;
+        public string start;
+        public string end;
         public CustomEvent(string e, string l, int p, int le)
         {
             eventName = e;
