@@ -13,6 +13,7 @@ namespace WindowsFormsApplication1
 {
     public partial class Form2 : Form
     {
+        
         List<CustomEvent> customEvents = new List<CustomEvent>();
         Dictionary<string, ListViewItem> timeToListView = new Dictionary<string, ListViewItem>();
         public Form2()
@@ -31,7 +32,7 @@ namespace WindowsFormsApplication1
 
         private void addToDictionary()
         {
-            timeToListView.Add("8:00 AM", listView1.Items[0]);
+            timeToListView.Add("8:00:00 AM", listView1.Items[0]);
             timeToListView.Add("8:30:00 AM", listView1.Items[1]);
             timeToListView.Add("9:00:00 AM", listView1.Items[2]);
             timeToListView.Add("9:30:00 AM", listView1.Items[3]);
@@ -94,7 +95,8 @@ namespace WindowsFormsApplication1
             List<string> end = new List<string>();
             List<CustomEvent> c = new List<CustomEvent>();
             List<string> dayofweek = new List<string>();
-            prg.getEvent(events, loc, start, end,dayofweek);
+            List<double> duration = new List<double>();
+            prg.getEvent(events, loc, start, end,dayofweek,duration);
             for (int i = 0; i < events.Count; i++)
             {
                 
@@ -128,10 +130,86 @@ namespace WindowsFormsApplication1
                 string time = start[i].ToString().Split(' ')[1] + " " + start[i].ToString().Split(' ')[2];
                 timeToListView[time].SubItems[dayOfWeekInt].Text = events[i];
 
+                for (int j = 1; j < duration[i]; j++)
+                {
+                    time = dateIncrementer(time);
+                    timeToListView[time].SubItems[dayOfWeekInt].Text = events[i];
+                }
+
 
             }
 
             
+        }
+
+        private string dateIncrementer(string time)
+        {
+            StringBuilder timebuilder = new StringBuilder(time);
+            //special cases
+            if (time == "11:30:00 AM")
+            {
+                time = "12:00:00 PM";
+                return time;
+            }
+            if (time == "11:30:00 PM")
+            {
+                time = "12:00:00 AM";
+                return time;
+            }
+            if (time == "9:30:00 AM")
+            {
+                time = "10:00:00 AM";
+                return time;
+            }
+            if (time == "9:30:00 PM")
+            {
+                time = "10:00:00 PM";
+                return time;
+            }
+            if (time == "12:30:00 AM")
+            {
+                time = "1:00:00 AM";
+                return time;
+            }
+            if (time == "12:30:00 PM")
+            {
+                time = "1:00:00 PM";
+                return time;
+            }
+            
+
+            if (time[0] == '1' && time[1] != ':')
+            {
+                if (time[3] == '0')
+                {
+                    timebuilder[3] = '3';
+                }
+                else if (time[3] == '3')
+                {
+                    timebuilder[1] = (char)((int)Char.GetNumericValue(time[0]) + 1+48);
+                    timebuilder[3] = '0';
+                    
+                }
+                return timebuilder.ToString();
+            }
+            else
+            {
+                if (time[2] == '0')
+                {
+                    
+                    timebuilder[2] = '3';
+                }
+                else if (time[2] == '3')
+                {
+                    
+                    
+
+                    timebuilder[0] = Convert.ToChar((int) (Char.GetNumericValue(time[0]) + 1+48));
+                    timebuilder[2] = '0';
+
+                }
+                return timebuilder.ToString();
+            }
         }
     }
 }

@@ -100,7 +100,7 @@ namespace CalendarQuickstart
             Event recurringEvent = service.Events.Insert(myEvent, "primary").Execute();
         }
 
-        public void getEvent(List<string> eventlist, List<string> location, List<string> starttime, List<string> endtime, List<string> dayOfWeek)
+        public void getEvent(List<string> eventlist, List<string> location, List<string> starttime, List<string> endtime, List<string> dayOfWeek, List<double> totalDurationInHalfHours)
         {
             UserCredential credential;
 
@@ -140,6 +140,7 @@ namespace CalendarQuickstart
             {
                 foreach (var eventItem in events.Items)
                 {
+                    
                     string when = eventItem.Start.DateTime.ToString();
                     string end = eventItem.End.DateTime.ToString();
                     string loc = " ";
@@ -166,6 +167,8 @@ namespace CalendarQuickstart
                     starttime.Add(when);
                     endtime.Add(end);
                     location.Add(loc);
+                    double time = (eventItem.End.DateTime - eventItem.Start.DateTime).Value.TotalHours*2;
+                    totalDurationInHalfHours.Add(time);
 
                 }
             }
