@@ -114,7 +114,9 @@ namespace WindowsFormsApplication1
 
         private void btnDone_Click(object sender, EventArgs e)
         {
-            DisplayCalender form2 = new DisplayCalender();
+            Form2 form2 = new Form2();
+            MessageBox.Show("Connecting to Internet");
+            form2.getEvents(customEvents);
             form2.Show();
         }
 
