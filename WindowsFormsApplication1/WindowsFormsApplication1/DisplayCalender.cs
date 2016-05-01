@@ -1,5 +1,12 @@
 ﻿using CalendarQuickstart;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Calendar.v3;
+using Google.Apis.Calendar.v3.Data;
+using Google.Apis.Services;
+using Google.Apis.Util.Store;
 using System;
+using System.IO;
+
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -8,6 +15,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Threading;
+using WindowsFormsApplication1;
+
+
+
+
 
 namespace WindowsFormsApplication1
 {
@@ -16,7 +29,7 @@ namespace WindowsFormsApplication1
         
         List<CustomEvent> customEvents = new List<CustomEvent>();
         List<CustomEvent> userInputEvent = new List<CustomEvent>();
-
+        List<CustomEvent> customEventListWithTime = new List<CustomEvent>();
         Dictionary<string, ListViewItem> timeToListView = new Dictionary<string, ListViewItem>();
         public Form2()
         {
@@ -149,15 +162,86 @@ namespace WindowsFormsApplication1
                 {
                     time = dateIncrementer(time);
                     timeToListView[time].SubItems[dayOfWeekInt].Text = events[i];
-
+                    
                 }
 
 
             }
+            addEventsToCalendar();
 
-            
+
         }
-    
+        private void addEventsToCalendar()
+        {
+            for (int i = 0; i < userInputEvent.Count; i++)
+            {
+                int lengthInHalfHours = (int)Math.Ceiling((double)userInputEvent[i].getLength() / 30.0);
+
+                List<String> TimesAndDay = findOpenSpot(lengthInHalfHours);
+                string begintime = TimesAndDay[0];
+                string endtime = TimesAndDay[1];
+                int day = Int32.Parse(TimesAndDay[2]);
+                if (begintime == "" || endtime == "")
+                {
+                    MessageBox.Show("No place for this event!");
+                }
+                else
+                {
+                    DateTime startOfWeek = DateTime.Today.AddDays(-1 * (int)(DateTime.Today.DayOfWeek));
+                    DateTime date = DateTime.Today.AddDays(day - 1);
+                    
+                    //CustomEvent c = new CustomEvent(userInputEvent[i].getEventName(),userInputEvent[i].getLocation(),  date.ToString() + " "+ begintime , date.ToString() + " " + endtime);
+                    //customEventListWithTime.Add(c);
+                    while (begintime != endtime)
+                    {
+                        timeToListView[begintime].SubItems[day].Text = userInputEvent[i].getEventName();
+
+                        begintime = dateIncrementer(begintime);
+                        
+                    }
+                }
+            }
+        }
+        
+        private List<String> findOpenSpot(int lengthInHalfHours)
+        {
+            List<String> toReturn = new List<String>();
+            string start = "9:00:00 AM";
+            int day = 1;
+            string beginTime = start;
+            string endTime = "";
+            for (int i = 0; i < lengthInHalfHours;) {
+                if (start == "12:00:00 AM")
+                {
+                    beginTime = start;
+
+                    i = 0;
+                    endTime = "";
+                    day++;
+                }
+                if (timeToListView[start].SubItems[day].Text != "")
+                {
+
+                    start = dateIncrementer(start);
+                    beginTime = start;
+
+                    i = 0;
+                    endTime = "";
+
+                }
+                else
+                {
+                    start = dateIncrementer(start);
+                    i++;
+                }
+            }
+            endTime = start;
+            toReturn.Add(beginTime);
+            toReturn.Add(endTime);
+            toReturn.Add(day.ToString());
+            return toReturn;
+
+        }
         private string dateIncrementer(string time)
         {
             StringBuilder timebuilder = new StringBuilder(time);
@@ -192,7 +276,17 @@ namespace WindowsFormsApplication1
                 time = "1:00:00 PM";
                 return time;
             }
-            
+            if (time == "10:30:00 AM")
+            {
+                time = "11:00:00 AM";
+                return time;
+            }
+            if (time == "10:30:00 PM")
+            {
+                time = "11:00:00 PM";
+                return time;
+            }
+
 
             if (time[0] == '1' && time[1] != ':')
             {
@@ -200,12 +294,7 @@ namespace WindowsFormsApplication1
                 {
                     timebuilder[3] = '3';
                 }
-                else if (time[3] == '3')
-                {
-                    timebuilder[1] = (char)((int)Char.GetNumericValue(time[0]) + 1+48);
-                    timebuilder[3] = '0';
-                    
-                }
+                
                 return timebuilder.ToString();
             }
             else
@@ -230,6 +319,46 @@ namespace WindowsFormsApplication1
 
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
+
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            string[] Scopes = { CalendarService.Scope.CalendarReadonly };
+            string ApplicationName = "Google Calendar API .NET Quickstart";
+            UserCredential credential;
+
+            using (var stream =
+                new FileStream("client_secret.json", FileMode.Open, FileAccess.Read))
+            {
+                string credPath = System.Environment.GetFolderPath(
+                    System.Environment.SpecialFolder.Personal);
+                credPath = Path.Combine(credPath, ".credentials/calendar-dotnet-quickstart.json");
+
+                credential = GoogleWebAuthorizationBroker.AuthorizeAsync(
+                    GoogleClientSecrets.Load(stream).Secrets,
+                    Scopes,
+                    "user",
+                    CancellationToken.None,
+                    new FileDataStore(credPath, true)).Result;
+                Console.WriteLine("Credential file saved to: " + credPath);
+            }
+
+            // Create Google Calendar API service.
+            var service = new CalendarService(new BaseClientService.Initializer()
+            {
+                HttpClientInitializer = credential,
+                ApplicationName = ApplicationName,
+            });
+            Event newEvent = new Event();
+            newEvent.Summary = tb_Title.Text;
+            newEvent.Description = tb_Desc.Text;
+            newEvent.Start = new EventDateTime();
+            newEvent.Start.DateTime = dateTimePicker1.Value;
+            newEvent.End = new EventDateTime();
+            newEvent.End.DateTime = dateTimePicker1.Value.AddHours(1);
+
+            calendarService.Events.Insert(newEvent, calendarId).Execute();
 
         }
     }
