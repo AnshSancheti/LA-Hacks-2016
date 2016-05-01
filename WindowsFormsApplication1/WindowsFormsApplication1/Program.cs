@@ -131,7 +131,7 @@ namespace CalendarQuickstart
             request.TimeMin = DateTime.Now;
             request.ShowDeleted = false;
             request.SingleEvents = true;
-            request.MaxResults = 30;
+            request.MaxResults = 100;
             request.OrderBy = EventsResource.ListRequest.OrderByEnum.StartTime;
 
             // List events.
